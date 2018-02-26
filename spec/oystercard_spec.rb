@@ -8,5 +8,11 @@ describe Oystercard do
     end
   end
 
+  context "Topping up Oystercard" do
+    it "should increase the current balance by a specified amount" do
+      result = subject.top_up(13)
+      expect(result).to eq subject.balance
+    end
+  end
 
 end
