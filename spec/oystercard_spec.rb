@@ -26,5 +26,16 @@ describe Oystercard do
     end
   end
 
+  context "Checking whether you are in journey or not" do
+    it "expects to initally not be in journey" do
+      expect(subject).not_to be_in_journey
+    end
+    it "expects to be in a journey after a touch in" do
+      expect(subject.touch_in).to be :in_use
+    end
+    it "expects to not to be in a journey after a touch out" do
+      expect(subject.touch_out).to be :not_in_use
+    end
+  end
 
 end
