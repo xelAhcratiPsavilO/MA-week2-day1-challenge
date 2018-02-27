@@ -74,6 +74,11 @@ describe Oystercard do
         subject.touch_out(fake_station)
         expect(subject.exit_station).to eq fake_station
       end
+
+      it 'shold store journey history' do
+        subject.touch_out(fake_station)
+        expect(subject.history).to eq [{:entry_station => fake_station, :exit_station => fake_station}]
+      end
     end
   end
 end
