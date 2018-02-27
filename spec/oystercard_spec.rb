@@ -1,7 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
-  let(:fake_station) { double() }
+  let(:fake_station) { double }
   context 'Creation of a new Oystercard' do
     it 'should have a stating balance of zero by default' do
       expect(subject.balance).to eq 0
@@ -86,7 +86,7 @@ describe Oystercard do
       end
 
       it 'shold store journey history' do
-        expect(subject.history).to eq [{:entry_station => fake_station, :exit_station => fake_station}]
+        expect(subject.history).to eq [{ entry_station: fake_station, exit_station: fake_station }]
       end
     end
   end
