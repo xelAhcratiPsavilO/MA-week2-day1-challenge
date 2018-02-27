@@ -1,6 +1,7 @@
 class Oystercard
-  attr_reader :card_status
+  attr_reader :card_status, :entry_station
   attr_accessor :balance
+
 
   BALANCE = 0
   TOP_UP_LIMIT = 90
@@ -8,7 +9,7 @@ class Oystercard
 
   def initialize(balance = BALANCE)
     @balance = balance
-    @card_status = :not_in_use
+    @entry_station = nil
   end
 
   def top_up(added_money)
@@ -17,12 +18,12 @@ class Oystercard
   end
 
   def in_journey?
-    @card_status == :in_use
+    @entry_station != nil
   end
 
- def touch_in
+ def touch_in(starting_station)
      fail "Insufficient funds, top up." if check_limit
-     @card_status = :in_use
+     @entry_station = starting_station
  end
 
  def check_limit
@@ -30,7 +31,7 @@ class Oystercard
  end
 
  def touch_out
-   @card_status = :not_in_use
+   @entry_station = nil
    deduct(1)
  end
 
