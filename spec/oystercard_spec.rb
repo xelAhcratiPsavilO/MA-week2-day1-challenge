@@ -6,6 +6,10 @@ describe Oystercard do
     it 'should have a stating balance of zero by default' do
       expect(subject.balance).to eq 0
     end
+
+    it 'should have an empty journey history' do
+      expect(subject.history).to be_empty
+    end
   end
 
   context 'Topping up Oystercard' do
