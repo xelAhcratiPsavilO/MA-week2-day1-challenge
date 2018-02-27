@@ -69,18 +69,23 @@ describe Oystercard do
         expect { subject.touch_out(fake_station) }.to change { subject.balance }.by(-1)
       end
 
-      it 'should reset entry station' do
+      before(:each) do
         subject.touch_out(fake_station)
+      end
+
+      it 'should reset entry station' do
         expect(subject.entry_station).to eq nil
       end
 
       it 'should save my touch out station' do
-        subject.touch_out(fake_station)
         expect(subject.exit_station).to eq fake_station
       end
 
+      it 'should create a journey' do
+        expect(subject.history).not_to be_empty
+      end
+
       it 'shold store journey history' do
-        subject.touch_out(fake_station)
         expect(subject.history).to eq [{:entry_station => fake_station, :exit_station => fake_station}]
       end
     end
