@@ -1,5 +1,7 @@
 class Oystercard
-  attr_reader :balance, :card_status
+  attr_reader :card_status
+  attr_accessor :balance
+
   BALANCE = 0
   TOP_UP_LIMIT = 90
   ENTRY_LIMIT = 1
