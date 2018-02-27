@@ -15,7 +15,7 @@ describe Oystercard do
     end
 
     it 'raises an error if attempt to top up would exceed maximum balance' do
-      expect { subject.top_up(Oystercard::TOP_UP_LIMIT + 1) }.to raise_error "Exceeded #{Oystercard::TOP_UP_LIMIT} limit"
+      expect { subject.top_up(Oystercard::TOP_UP_LIMIT + 1) }.to raise_error "Exceeded top up limit of: #{Oystercard::TOP_UP_LIMIT}"
     end
   end
 
@@ -23,7 +23,7 @@ describe Oystercard do
     it 'should decrease the current balance by a specified amount' do
       subject.top_up(1)
       subject.touch_in(fake_station)
-      expect(subject.touch_out).to eq 0
+      expect(subject.touch_out(fake_station)).to eq 0
     end
   end
 
@@ -34,7 +34,7 @@ describe Oystercard do
     end
 
     it 'expects to initally not be in journey' do
-      subject.touch_out
+      subject.touch_out(fake_station)
       expect(subject).not_to be_in_journey
     end
 
@@ -43,13 +43,13 @@ describe Oystercard do
     end
 
     it 'expects to not to be in a journey after a touch out' do
-      subject.touch_out
+      subject.touch_out(fake_station)
       expect(subject.in_journey?).to be false
     end
 
     context 'Trying to start a journey with balance under the limit' do
       it 'returns an error, not enough funds' do
-        subject.touch_out
+        subject.touch_out(fake_station)
         expect { subject.touch_in(fake_station) }.to raise_error 'Insufficient funds, top up.'
       end
     end
@@ -62,14 +62,17 @@ describe Oystercard do
 
     context 'When finishing the journey' do
       it 'updates the balance by deducting the min fare' do
-        expect { subject.touch_out }.to change { subject.balance }.by(-1)
+        expect { subject.touch_out(fake_station) }.to change { subject.balance }.by(-1)
       end
-    end
 
-    context 'When I start my journey' do
-      it 'should save my starting station' do
-        subject.touch_out
+      it 'should reset entry station' do
+        subject.touch_out(fake_station)
         expect(subject.entry_station).to eq nil
+      end
+
+      it 'should save my touch out station' do
+        subject.touch_out(fake_station)
+        expect(subject.exit_station).to eq fake_station
       end
     end
   end
